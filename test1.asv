@@ -1,0 +1,23 @@
+clear
+clc
+Lx = 1.0; % length of the domain
+Ly = 2.0 ; % length of y domain 
+
+% Then we define the number of cells in the domain:
+
+Nx = 10; % number of cells in the domain
+Ny = 10;
+% Now we call createMesh1D, one of the functions from a group of createMesh* functions:
+
+m = createMesh2D(Nx,Ny, Lx, Ly);
+[X,Y] = ndgrid(m.cellcentres.x , m.cellcenters.y)
+[Xf,Yf] = ndgrid( m.facecentres.x, m.facecenters.y)
+
+disp(m)
+figure(3132);
+plot(X,'+b');
+plot(m.cellcenters.y, ones(size(m.cellcenters.y)),'-g');
+ 
+legend('cell centers', 'face centers');
+title('Visualization of a 1D discretized domain');
+

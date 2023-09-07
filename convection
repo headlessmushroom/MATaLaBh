@@ -1,0 +1,14 @@
+Mconv =  convectionTerm(u_face); % convection term, central, second order
+Mconvupwind = convectionUpwindTerm(u_face); % convection term, upwind, first order
+Mdiff = diffusionTerm(Dave); % diffusion term
+[Mbc, RHSbc] = boundaryCondition(BC); % boundary condition discretization
+M = Mconv-Mdiff+Mbc; % matrix of coefficient for central scheme
+Mupwind = Mconvupwind-Mdiff+Mbc; % matrix of coefficient for upwind scheme
+RHS = RHSbc; % right hand side vector
+c = solvePDE(meshstruct, M, RHS); % solve for the central scheme
+c_upwind = solvePDE(meshstruct, Mupwind, RHS); % solve for the upwind scheme
+c_analytical = (1-exp(u*x/D_val))/(1-exp(u*L/D_val)); % analytical solution
+figure(5);
+plot(x, c.value(2:Nx+1), x, c_upwind.value(2:Nx+1), '--',...
+    x, c_analytical, '.');
+legend('central', 'upwind', 'analytical');
